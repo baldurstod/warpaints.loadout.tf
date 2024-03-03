@@ -1,0 +1,12 @@
+{
+	"port": 0,
+	"https_key_file": "",
+	"https_cert_file": "",
+	"sessions_file_store": "",
+	"sessions_auth_key": "",
+	"sessions_encrypt_key": "",
+	"patreon_client_id": "",
+	"patreon_client_secret": "",
+	"patreon_redirect_url": "",
+	"patreon_creator_id": ""
+}

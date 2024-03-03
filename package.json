@@ -1,6 +1,9 @@
 {
 	"name": "warpaints.loadout.tf",
 	"devDependencies": {
+		"@rollup/plugin-json": "^6.1.0",
+		"@rollup/plugin-node-resolve": "^15.2.3",
+		"@rollup/plugin-replace": "^5.0.5",
 		"@rollup/plugin-terser": "^0.4.4",
 		"rollup": "^4.12.0",
 		"rollup-plugin-copy": "^3.5.0",

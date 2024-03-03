@@ -1,0 +1,22 @@
+*{
+	transition: all 0.2s;
+}
+
+:host{
+	width: 15rem;
+	display: block;
+	overflow: hidden;
+}
+
+:hover{
+	background-color: rgb(150, 150, 150);
+}
+
+img{
+	width: 100%;
+}
+
+
+img:hover{
+	/*background-color: rgb(150, 150, 150);*/
+}

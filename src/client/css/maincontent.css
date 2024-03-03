@@ -1,0 +1,8 @@
+.maincontent{
+	flex: 1;
+}
+
+.warpaints{
+	display: flex;
+	flex-wrap: wrap;
+}
