@@ -11,6 +11,7 @@ func main() {
 	config := server.Config{}
 	if content, err := os.ReadFile("config.json"); err == nil {
 		if err = json.Unmarshal(content, &config); err == nil {
+			server.StartCrawler(&config)
 			server.StartServer(&config)
 		} else {
 			log.Println("Error while reading configuration", err)
