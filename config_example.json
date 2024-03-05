@@ -1,7 +1,13 @@
 {
-	"port": 0,
-	"https_key_file": "",
-	"https_cert_file": "",
+	"http": {
+		"port": 0,
+		"https_key_file": "./var/key.pem",
+		"https_cert_file": "./var/cert.pem"
+	},
+	"database": {
+		"connect_uri": "mongodb://localhost:27017",
+		"db_name": "warpaints"
+	},
 	"sessions_file_store": "",
 	"sessions_auth_key": "",
 	"sessions_encrypt_key": "",

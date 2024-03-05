@@ -21,8 +21,8 @@ func StartServer(config *Config) {
 
 	handler := initHandlers(config)
 
-	log.Printf("Listening on port %d\n", config.Port)
-	err := http.ListenAndServeTLS(":"+strconv.Itoa(config.Port), config.HttpsCertFile, config.HttpsKeyFile, handler)
+	log.Printf("Listening on port %d\n", config.HTTP.Port)
+	err := http.ListenAndServeTLS(":"+strconv.Itoa(config.HTTP.Port), config.HTTP.HttpsCertFile, config.HTTP.HttpsKeyFile, handler)
 	log.Fatal(err)
 }
 
