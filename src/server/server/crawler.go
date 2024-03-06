@@ -1,15 +1,16 @@
 package server
 
 import (
+	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 	"strconv"
-	"errors"
-	"encoding/json"
+	"strings"
 )
 
 var MARKET_RENDER_URL = "https://steamcommunity.com/market/search/render/?norender=1"
-re := strings.NewReplacer("Festivized", "", "Specialized", "", "Professional", "", "Killstreak", "")
+var re = strings.NewReplacer("Festivized", "", "Specialized", "", "Professional", "", "Killstreak", "")
 
 type Crawler struct {
 	config    *Config
@@ -37,7 +38,6 @@ func (crawler *Crawler) processPage(parameters string) {
 	log.Println(totalCount, err)
 }
 
-
 func request(marketURL string) (int, error) {
 	resp, err := http.Get(marketURL)
 
@@ -45,32 +45,42 @@ func request(marketURL string) (int, error) {
 		return 0, err
 	}
 
-	marketResult := make(map[string]interface{})
+	marketResult := MarketResponse{} //make(map[string]interface{})
 	err = json.NewDecoder(resp.Body).Decode(&marketResult)
 	if err != nil {
 		return 0, err
 	}
 
-	s, ok := marketResult["success"]
+	log.Println(marketResult.TotalCount)
+	if !marketResult.Success {
+		return 0, errors.New("Erroneous result from market")
+	}
+
+	for _, listing := range marketResult.Listings {
+		processListing(&listing)
+	}
+
+	/*s, ok := marketResult["success"]
 	results, ok2 := marketResult["results"]
 	totalCount, ok3 := marketResult["total_count"]
 	if !ok || !ok2 || !ok3 || s.(bool) != true {
 		return 0, errors.New("Erroneous result from market")
-	}
+	}*/
 
-	return int(totalCount.(float64)), processResults(results.([]interface{}))
+	//return int(totalCount.(float64)), processResults(results.([]interface{}))
+	return marketResult.TotalCount, nil
 }
 
-func processResults(results []interface{}) error {
-	for _, result := range results {
-		processResult(result.(map[string]interface{}))
-	}
+func processListing(listing *Listing) error {
+	/*STEAM_ECONOMY_IMAGE_PREFIX := "https://steamcommunity-a.akamaihd.net/economy/image/"
+	log.Println(STEAM_ECONOMY_IMAGE_PREFIX + listing.AssetDescription.IconURL)*/
+	log.Println(listing)
+
+	addListing(listing)
+
+	//err = json.NewDecoder(resp.Body).Decode(&marketResult)
+
 	return nil
-}
-
-
-func processResult(result map[string]interface{}) error {
-
 }
 
 func cleanupName(name string) string {

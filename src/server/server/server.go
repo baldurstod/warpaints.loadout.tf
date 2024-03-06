@@ -1,14 +1,14 @@
 package server
 
 import (
-	"warpaints.loadout.tf"
 	"github.com/gorilla/mux"
 	"io/fs"
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"strconv"
+	"strings"
+	"warpaints.loadout.tf"
 )
 
 var UseEmbed = "true"

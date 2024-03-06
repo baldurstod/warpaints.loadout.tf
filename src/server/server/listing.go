@@ -1,16 +1,17 @@
 package server
 
 type Listing struct {
-	name         string `json:"name"`
-	hashName     string `json:"hash_name"`
-	sellListings int    `json:"sell_listings"`
-	sellPrice    int    `json:"sell_price"`
+	Name         string `json:"name" bson:"name"`
+	HashName     string `json:"hash_name" bson:"hash_name"`
+	SellListings int    `json:"sell_listings" bson:"sell_listings"`
+	SellPrice    int    `json:"sell_price" bson:"sell_price"`
 
-	assetDescription struct {
-		appip      int    `json:"appid"`
-		classid    string `json:"classid"`
-		instanceid string `json:"instanceid"`
-		tradable   int    `json:"tradable"`
-		commodity  int    `json:"commodity"`
-	} `json:"asset_description"`
+	AssetDescription struct {
+		Appip      int    `json:"appid" bson:"appid"`
+		Classid    string `json:"classid" bson:"classid"`
+		Instanceid string `json:"instanceid" bson:"instanceid"`
+		IconURL    string `json:"icon_url" bson:"icon_url"`
+		Tradable   int    `json:"tradable" bson:"tradable"`
+		Commodity  int    `json:"commodity" bson:"commodity"`
+	} `json:"asset_description" bson:"asset_description"`
 }
