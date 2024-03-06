@@ -6,28 +6,17 @@ export class Warpaint {
 	#sellPrice;
 	#sellListings;
 	#sellPriceTime;
-	#marketHashName;
+	#hashName;
 	#classID;
-	constructor(json = {
-		paintkit: 'Park Pigmented',
-		weapon: 'Bazaar Bargain',
-		wear: 'Well-Worn',
-		"icon_url": "fWFc82js0fmoRAP-qOIPu5THSWqfSmTELLqcUywGkijVjZULUrsm1j-9xgEMaQkUTxr2vTx8mMnvA-aHAfQ_ktk664MayTdinxVwPffmYGZYexDHDPQODsot8Qn-XWkw658wDILjo-JeeF3pvNOQYbR9NN1MHcHVD_GGbgv-4xlr0aBcfJKJvmqxiouevZ35",
-		"sell_price": 354,
-		"sell_listings": 1,
-		"sell_price_time": 1661748599,
-		"market_hash_name": "Park Pigmented Bazaar Bargain (Well-Worn)",
-		"classid": "2570576102"
-
-	}) {
+	constructor(json) {
 		this.#paintkit = json.paintkit;
 		this.#weapon = json.weapon;
 		this.#wear = json.wear;
-		this.#iconURL = json.icon_url;
+		this.#iconURL = json.asset_description?.icon_url;
 		this.#sellPrice = json.sell_price;
 		this.#sellListings = json.sell_listings;
 		this.#sellPriceTime = json.sell_price_time;
-		this.#marketHashName = json.market_hash_name;
+		this.#hashName = json.hash_name;
 		this.#classID = json.classid;
 	}
 
@@ -59,8 +48,8 @@ export class Warpaint {
 		return this.#sellPriceTime;
 	}
 
-	get marketHashName() {
-		return this.#marketHashName;
+	get hashName() {
+		return this.#hashName;
 	}
 
 	get classID() {

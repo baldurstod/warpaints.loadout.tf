@@ -29,24 +29,6 @@ class Application {
 		this.#setupAnalytics();
 		this.#startup();
 		addEventListener('popstate', event => this.#startup(event.state ?? {}));
-
-
-		this.#appContent.addWarpaints([
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-			new Warpaint(),
-		]);
-
 	}
 
 	async #startup(historyState) {
@@ -81,9 +63,16 @@ class Application {
 		this.#startup();
 	}
 
-	#viewWeapon(pathParams) {
+	async #viewWeapon(pathParams) {
 		const weaponName = pathParams[1];
-		ServerAPI.getWeapon('Knife', 'Factory New');
+		const response = await ServerAPI.getWeapon('Knife', 'Factory New');
+		console.log(response);
+		const warpaints = [];
+		for (const listing of response) {
+			const warpaint = new Warpaint(listing);
+			warpaints.push(warpaint);
+		}
+		this.#appContent.addWarpaints(warpaints);
 	}
 
 	#initHTML() {

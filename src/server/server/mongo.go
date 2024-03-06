@@ -69,9 +69,9 @@ func findWarpaints(weapon string, wear string) ([]bson.M, error) {
 	if err = cursor.All(context.TODO(), &results); err != nil {
 		return nil, err
 	}
-	for _, result := range results {
+	/*for _, result := range results {
 		log.Println(result)
-	}
+	}*/
 
 	//objectID := res.InsertedID.(primitive.ObjectID)
 	return results, nil

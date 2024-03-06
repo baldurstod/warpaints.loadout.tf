@@ -14,7 +14,11 @@ export class ServerAPI {
 			),
 		};
 
-		return await fetch('./api', fetchOptions);
+		const response = await fetch('./api', fetchOptions);
+		const json = await response.json();
+		if (json.success) {
+			return json.result;
+		}
 	}
 
 

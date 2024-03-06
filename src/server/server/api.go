@@ -51,7 +51,7 @@ func (handler ApiHandler) getWeapon(w http.ResponseWriter, r *http.Request, body
 	}
 
 	params := p.(map[string]interface{})
-	log.Println(params)
+	//log.Println(params)
 
 	results, err := findWarpaints(params["weapon"].(string), params["wear"].(string))
 	if err != nil {
