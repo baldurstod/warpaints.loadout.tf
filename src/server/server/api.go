@@ -2,9 +2,9 @@ package server
 
 import (
 	"encoding/json"
-	"net/http"
 	"errors"
 	"log"
+	"net/http"
 )
 
 type ApiHandler struct {

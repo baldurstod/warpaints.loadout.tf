@@ -5,6 +5,7 @@ type Listing struct {
 	HashName     string `json:"hash_name" bson:"hash_name"`
 	SellListings int    `json:"sell_listings" bson:"sell_listings"`
 	SellPrice    int    `json:"sell_price" bson:"sell_price"`
+	LastUpdate   int64  `json:"last_update" bson:"last_update"`
 
 	AssetDescription struct {
 		Appip      int    `json:"appid" bson:"appid"`

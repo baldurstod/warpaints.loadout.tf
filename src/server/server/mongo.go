@@ -6,8 +6,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
 	"log"
+	"time"
 )
 
 var cancelConnect context.CancelFunc
@@ -39,6 +39,8 @@ func addListing(listing *Listing) error {
 
 	opts := options.Replace().SetUpsert(true)
 
+	listing.LastUpdate = time.Now().Unix()
+
 	filter := bson.D{{"hash_name", listing.HashName}}
 	_, err := warpaintsCollection.ReplaceOne(ctx, filter, listing, opts)
 	if err != nil {
@@ -52,7 +54,6 @@ func addListing(listing *Listing) error {
 func findWarpaints(weapon string, wear string) ([]bson.M, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-
 
 	//filter := bson.D{{"hash_name" : {$regex : weapon}}
 	//filter := bson.D{{"hash_name", bson.D{{"$regex", weapon}, {"$options", "i"}}}}
@@ -71,7 +72,6 @@ func findWarpaints(weapon string, wear string) ([]bson.M, error) {
 	for _, result := range results {
 		log.Println(result)
 	}
-
 
 	//objectID := res.InsertedID.(primitive.ObjectID)
 	return results, nil
