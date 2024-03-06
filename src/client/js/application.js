@@ -65,7 +65,7 @@ class Application {
 
 	async #viewWeapon(pathParams) {
 		const weaponName = pathParams[1];
-		const response = await ServerAPI.getWeapon('Knife', 'Factory New');
+		const response = await ServerAPI.getWeapon(weaponName, 'Factory New');
 		console.log(response);
 		const warpaints = [];
 		for (const listing of response) {
