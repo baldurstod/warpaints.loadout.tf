@@ -43,6 +43,7 @@ func initHandlers(config *Config) *mux.Router {
 	r := mux.NewRouter()
 	r.Use(pm.middleware)
 	r.Use(rewriteURL)
+	r.PathPrefix("/api").Handler(&RecoveryHandler{Handler: ApiHandler{}})
 	r.PathPrefix("/").Handler(&RecoveryHandler{Handler: http.FileServer(http.FS(useFS))})
 
 	return r

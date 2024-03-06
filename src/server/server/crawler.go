@@ -74,7 +74,7 @@ func request(marketURL string) (int, error) {
 func processListing(listing *Listing) error {
 	/*STEAM_ECONOMY_IMAGE_PREFIX := "https://steamcommunity-a.akamaihd.net/economy/image/"
 	log.Println(STEAM_ECONOMY_IMAGE_PREFIX + listing.AssetDescription.IconURL)*/
-	log.Println(listing)
+	//log.Println(listing)
 
 	addListing(listing)
 

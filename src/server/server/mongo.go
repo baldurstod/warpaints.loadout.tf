@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
-	//"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
@@ -47,4 +47,32 @@ func addListing(listing *Listing) error {
 
 	//objectID := res.InsertedID.(primitive.ObjectID)
 	return nil
+}
+
+func findWarpaints(weapon string, wear string) ([]bson.M, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+
+	//filter := bson.D{{"hash_name" : {$regex : weapon}}
+	//filter := bson.D{{"hash_name", bson.D{{"$regex", weapon}, {"$options", "i"}}}}
+	filter := bson.D{{"hash_name", primitive.Regex{Pattern: weapon, Options: "i"}}}
+	opts := options.Find().SetProjection(bson.M{"_id": 0})
+
+	cursor, err := warpaintsCollection.Find(ctx, filter, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	var results []bson.M
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		return nil, err
+	}
+	for _, result := range results {
+		log.Println(result)
+	}
+
+
+	//objectID := res.InsertedID.(primitive.ObjectID)
+	return results, nil
 }
