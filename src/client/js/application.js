@@ -13,7 +13,9 @@ import english from '../json/i18n/english.json';
 import { MainContent } from './view/maincontent.js';
 import { Warpaint } from './model/warpaint.js';
 import { ServerAPI } from './serverapi.js';
-import { WEAR_LEVELS } from './constants.js';
+import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, WEAR_LEVELS } from './constants.js';
+import { Controller } from './controller.js';
+import { EVENT_TOOLBAR_WEAR_SELECTED } from './controllerevents.js';
 
 documentStyle(htmlCSS);
 documentStyle(varsCSS);
@@ -23,9 +25,15 @@ class Application {
 	#shadowRoot;
 	#appToolbar = new Toolbar();
 	#appContent = new MainContent();
+	#pageType = PAGE_TYPE_UNKNOWN;
+	#weaponFilter;
+	#warpaintFilter;
+	#wearFilter;
+
 	constructor() {
 		I18n.setOptions({ translations:[ english ] });
 		I18n.start();
+		this.#initListeners();
 		this.#initHTML();
 		this.#setupAnalytics();
 		this.#startup();
@@ -37,13 +45,21 @@ class Application {
 		this.#appContent.clearWarpaints();
 		const pathname = document.location.pathname;
 		const pathParams = pathname.substring(1).split('/');
+
+		this.#weaponFilter = '';
+		this.#warpaintFilter = '';
+		this.#wearFilter = WEAR_LEVELS[0];
+
 		switch (true) {
 			case pathname.startsWith('/@weapons'):
+				this.#pageType = PAGE_TYPE_WEAPONS;
 				break;
 			case pathname.startsWith('/@weapon'):
+				this.#pageType = PAGE_TYPE_WEAPON;
 				this.#viewWeapon(pathParams);
 				break;
 			case pathname.startsWith('/@warpaint'):
+				this.#pageType = PAGE_TYPE_WARPAINT;
 				this.#viewWeapon(pathParams);
 				break;
 			default:
@@ -64,6 +80,12 @@ class Application {
 	async #viewWeapon(pathParams) {
 		const weaponName = decodeURIComponent(pathParams[1]);
 		const wear = this.#checkWear(decodeURIComponent(pathParams[2]));
+
+		this.#weaponFilter = weaponName;
+		this.#wearFilter = wear;
+
+		this.#appToolbar.setWear(wear);
+
 		const response = await ServerAPI.getWeapon(weaponName, wear);
 		console.log(response);
 		const warpaints = [];
@@ -83,6 +105,28 @@ class Application {
 		}
 
 		return WEAR_LEVELS[0];
+	}
+
+	#initListeners() {
+		Controller.addEventListener(EVENT_TOOLBAR_WEAR_SELECTED, event => this.#changeWear(event.detail));
+	}
+
+	#changeWear(wear) {
+		this.#wearFilter = this.#checkWear(wear);
+		//const pathname = document.location.pathname;
+		//const pathParams = pathname.substring(1).split('/');
+
+		const url = this.#buildURL();
+		if (url) {
+			this.#navigateTo(url);
+		}
+	}
+
+	#buildURL() {
+		switch (this.#pageType) {
+			case PAGE_TYPE_WARPAINT:
+				return `/@warpaint/${encodeURIComponent(this.#weaponFilter)}/${encodeURIComponent(this.#wearFilter)}`
+		}
 	}
 
 	#initHTML() {
