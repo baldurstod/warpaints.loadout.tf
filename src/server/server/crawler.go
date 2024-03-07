@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var MARKET_RENDER_URL = "https://steamcommunity.com/market/search/render/?norender=1"
@@ -19,14 +20,17 @@ type Crawler struct {
 
 func StartCrawler(config *Config) *Crawler {
 	crawler := Crawler{config: config}
-	crawler.Start()
+	go crawler.Start()
 
 	return &crawler
 }
 
 func (crawler *Crawler) Start() {
 	crawler.startPage = 0
-	crawler.processPage("&sort_column=name&sort_dir=asc&category_440_Quality%5B%5D=tag_paintkitweapon&appid=440")
+	for {
+		crawler.processPage("&sort_column=name&sort_dir=asc&category_440_Quality%5B%5D=tag_paintkitweapon&appid=440")
+		time.Sleep(10 * time.Second)
+	}
 }
 
 func (crawler *Crawler) processPage(parameters string) {
@@ -36,6 +40,13 @@ func (crawler *Crawler) processPage(parameters string) {
 	log.Println(marketURL)
 	totalCount, err := request(marketURL)
 	log.Println(totalCount, err)
+
+	if err == nil && totalCount > 0 {
+		crawler.startPage += itemsPerPage
+		if crawler.startPage > totalCount {
+			crawler.startPage = 0
+		}
+	}
 }
 
 func request(marketURL string) (int, error) {
