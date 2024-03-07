@@ -8,6 +8,8 @@ export class WarpaintElement extends HTMLElement {
 	#shadowRoot;
 	#htmlPicture;
 	#warpaint;
+	#visible = false;
+	#initialized = false;
 
 	constructor() {
 		super();
@@ -20,14 +22,28 @@ export class WarpaintElement extends HTMLElement {
 	}
 
 	connectedCallback() {
-		/*if (this.#doOnce) {
-			shadowRootStyle(this.#shadowRoot, contextMenuCSS);
-		}*/
+		const callback = (entries, observer) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.#setVisible(true);
+					observer.unobserve(entry.target);
+				}
+			});
+		};
+		new IntersectionObserver(callback, { threshold:0.5 }).observe(this);
+	}
+
+	#setVisible(visible) {
+		this.#visible = visible;
+		if (visible) {
+			this.#refresh();
+		}
 	}
 
 	#refresh() {
-		this.#htmlPicture.src = STEAM_ECONOMY_IMAGE_PREFIX + this.#warpaint?.iconURL;
-
+		if (this.#visible) {
+			this.#htmlPicture.src = STEAM_ECONOMY_IMAGE_PREFIX + this.#warpaint?.iconURL;
+		}
 	}
 
 	set warpaint(warpaint) {

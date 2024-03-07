@@ -4,6 +4,7 @@
 
 :host{
 	width: 15rem;
+	height: 15rem;
 	display: block;
 	overflow: hidden;
 }
@@ -14,9 +15,4 @@
 
 img{
 	width: 100%;
-}
-
-
-img:hover{
-	/*background-color: rgb(150, 150, 150);*/
 }
