@@ -1,9 +1,8 @@
-import { bugReportSVG, manufacturingSVG, moreHorizSVG, patreonLogoSVG, pauseSVG, photoCameraSVG, playSVG, print3dSVG, settingsSVG, shareSVG, viewInArSVG } from 'harmony-svg';
-import { createElement, hide, show } from 'harmony-ui';
-import { Controller } from '../controller';
-//import { EVENT_TOOLBAR_ABOUT, EVENT_TOOLBAR_ACTIVITY_MODIFIERS, EVENT_TOOLBAR_ACTIVITY_SELECTED, EVENT_TOOLBAR_ADVANCED_OPTIONS, EVENT_TOOLBAR_BUG, EVENT_TOOLBAR_EXPORT_FBX, EVENT_TOOLBAR_EXPORT_OBJ, EVENT_TOOLBAR_OPTIONS, EVENT_TOOLBAR_PATREON, EVENT_TOOLBAR_PAUSE, EVENT_TOOLBAR_PICTURE, EVENT_TOOLBAR_PLAY, EVENT_TOOLBAR_SHARE } from '../controllerevents';
+import { createElement, hide, } from 'harmony-ui';
 
-import { ENABLE_PATREON_POWERUSER } from '../bundleoptions';
+import { Controller } from '../controller'
+import { EVENT_TOOLBAR_WEAR_SELECTED } from '../controllerevents';
+import { WEAR_LEVELS } from '../constants';
 
 function createButton(svg, eventName, i18n) {
 	return createElement('div', {
@@ -22,7 +21,7 @@ export class Toolbar {
 	#htmlPause;
 	#htmlExportFBXButton;
 	#htmlExportOBJButton;
-	#htmlActivitySelector;
+	#htmlWearSelector;
 	#htmlActivityModifiers;
 	constructor() {
 		this.#initListeners();
@@ -62,19 +61,12 @@ export class Toolbar {
 					],
 				}),
 				createElement('div', {
-					class: 'toolbar-activity',
+					class: 'toolbar-wear',
 					childs: [
-						this.#htmlActivitySelector = createElement('select', {
-							class: 'toolbar-activity-selector',
+						this.#htmlWearSelector = createElement('select', {
+							class: 'toolbar-wear-selector',
 							events: {
-								change: event => this.#handleActivitySelected(event.target.value),
-							},
-						}),
-						this.#htmlActivityModifiers = createElement('input', {
-							class: 'toolbar-activity-modifiers',
-							events: {
-								change: event => this.#handleActivityModifiersChanged(event.target.value),
-								keyup: event => this.#handleActivityModifiersChanged(event.target.value),
+								change: event => this.#handleWearSelected(event.target.value),
 							},
 						}),
 					],
@@ -97,6 +89,15 @@ export class Toolbar {
 				}),
 			],
 		});
+
+		for (const wear of WEAR_LEVELS) {
+			createElement('option', {
+				parent: this.#htmlWearSelector,
+				value: wear,
+				innerText: wear,
+			});
+		}
+
 		hide(this.#htmlPlay);
 		return this.#htmlElement;
 	}
@@ -115,19 +116,11 @@ export class Toolbar {
 		}*/
 	}
 
-	#handleActivitySelected(activity) {
-		Controller.dispatchEvent(new CustomEvent(EVENT_TOOLBAR_ACTIVITY_SELECTED, { detail: activity }));
+	#handleWearSelected(wear) {
+		Controller.dispatchEvent(new CustomEvent(EVENT_TOOLBAR_WEAR_SELECTED, { detail: wear }));
 	}
 
-	#handleActivityModifiersChanged(modifiers) {
-		Controller.dispatchEvent(new CustomEvent(EVENT_TOOLBAR_ACTIVITY_MODIFIERS, { detail: modifiers.split(' ') }));
-	}
-
-	setActivity(activity) {
-		this.#htmlActivitySelector.value = activity;
-	}
-
-	setModifiers(modifiers) {
-		this.#htmlActivityModifiers.value = modifiers.join(' ');
+	setWear(wear) {
+		this.#htmlWearSelector.value = wear;
 	}
 }

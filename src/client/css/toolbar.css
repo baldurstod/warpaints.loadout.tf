@@ -26,10 +26,10 @@
 	width: 2.8rem;
 
 }
-.toolbar-activity{
+.toolbar-wear{
 	display: flex;
 }
-.toolbar-activity-selector, .toolbar-activity-modifiers{
+.toolbar-wear-selector{
 	font-size: 2rem;
 	margin: 0.3rem;
 	cursor: pointer;

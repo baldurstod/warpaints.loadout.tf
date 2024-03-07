@@ -57,7 +57,10 @@ func findWarpaints(weapon string, wear string) ([]bson.M, error) {
 
 	//filter := bson.D{{"hash_name" : {$regex : weapon}}
 	//filter := bson.D{{"hash_name", bson.D{{"$regex", weapon}, {"$options", "i"}}}}
-	filter := bson.D{{"hash_name", primitive.Regex{Pattern: weapon, Options: "i"}}}
+	filter := bson.D{
+		{"hash_name", primitive.Regex{Pattern: weapon, Options: "i"}},
+		{"hash_name", primitive.Regex{Pattern: wear, Options: "i"}},
+	}
 	opts := options.Find().SetProjection(bson.M{"_id": 0})
 
 	cursor, err := warpaintsCollection.Find(ctx, filter, opts)

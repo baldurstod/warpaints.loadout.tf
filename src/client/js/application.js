@@ -13,6 +13,7 @@ import english from '../json/i18n/english.json';
 import { MainContent } from './view/maincontent.js';
 import { Warpaint } from './model/warpaint.js';
 import { ServerAPI } from './serverapi.js';
+import { WEAR_LEVELS } from './constants.js';
 
 documentStyle(htmlCSS);
 documentStyle(varsCSS);
@@ -61,8 +62,9 @@ class Application {
 	}
 
 	async #viewWeapon(pathParams) {
-		const weaponName = pathParams[1];
-		const response = await ServerAPI.getWeapon(weaponName, 'Factory New');
+		const weaponName = decodeURIComponent(pathParams[1]);
+		const wear = this.#checkWear(decodeURIComponent(pathParams[2]));
+		const response = await ServerAPI.getWeapon(weaponName, wear);
 		console.log(response);
 		const warpaints = [];
 		for (const listing of response) {
@@ -70,6 +72,17 @@ class Application {
 			warpaints.push(warpaint);
 		}
 		this.#appContent.addWarpaints(warpaints);
+	}
+
+	#checkWear(wear) {
+		wear = wear.trim().toLowerCase();
+		for (const w of WEAR_LEVELS) {
+			if (w.toLowerCase() == wear) {
+				return w;
+			}
+		}
+
+		return WEAR_LEVELS[0];
 	}
 
 	#initHTML() {
