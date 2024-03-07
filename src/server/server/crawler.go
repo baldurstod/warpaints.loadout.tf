@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -13,17 +14,41 @@ import (
 var MARKET_RENDER_URL = "https://steamcommunity.com/market/search/render/?norender=1"
 var re = strings.NewReplacer("Festivized", "", "Specialized", "", "Professional", "", "Killstreak", "")
 
+var paintkitRegexp = regexp.MustCompile("(.*) War Paint")
+
 type Crawler struct {
 	config    *Config
 	startPage int
+	paintkits map[string]struct{}
 }
 
 func StartCrawler(config *Config) *Crawler {
-	crawler := Crawler{config: config}
+	crawler := Crawler{config: config, paintkits: make(map[string]struct{})}
+	crawler.initPaintkits()
 	go crawler.Start()
 
 	return &crawler
 }
+
+func (crawler *Crawler) initPaintkits() {
+	log.Println("results")
+	paintkits, err := findPaintkits()
+	if err != nil {
+		return
+	}
+
+	for _, paintkit := range paintkits {
+		crawler.addPaintkit(paintkit.HashName)
+	}
+}
+
+func (crawler *Crawler) addPaintkit(hashName string) {
+	res := paintkitRegexp.FindStringSubmatch(hashName)
+	if res != nil && len(res) == 2 {
+		crawler.paintkits[res[1]] = struct{}{}
+	}
+}
+
 
 func (crawler *Crawler) Start() {
 	crawler.startPage = 0
@@ -38,7 +63,7 @@ func (crawler *Crawler) processPage(parameters string) {
 	marketURL := MARKET_RENDER_URL + "&start=" + strconv.Itoa(crawler.startPage) + "&count=" + strconv.Itoa(itemsPerPage) + parameters
 
 	log.Println(marketURL)
-	totalCount, err := request(marketURL)
+	totalCount, err := crawler.request(marketURL)
 	log.Println(totalCount, err)
 
 	if err == nil && totalCount > 0 {
@@ -49,7 +74,7 @@ func (crawler *Crawler) processPage(parameters string) {
 	}
 }
 
-func request(marketURL string) (int, error) {
+func (crawler *Crawler) request(marketURL string) (int, error) {
 	resp, err := http.Get(marketURL)
 
 	if err != nil {
@@ -68,7 +93,7 @@ func request(marketURL string) (int, error) {
 	}
 
 	for _, listing := range marketResult.Listings {
-		processListing(&listing)
+		crawler.processListing(&listing)
 	}
 
 	/*s, ok := marketResult["success"]
@@ -82,12 +107,13 @@ func request(marketURL string) (int, error) {
 	return marketResult.TotalCount, nil
 }
 
-func processListing(listing *Listing) error {
+func (crawler *Crawler) processListing(listing *Listing) error {
 	/*STEAM_ECONOMY_IMAGE_PREFIX := "https://steamcommunity-a.akamaihd.net/economy/image/"
 	log.Println(STEAM_ECONOMY_IMAGE_PREFIX + listing.AssetDescription.IconURL)*/
 	//log.Println(listing)
 
 	addListing(listing)
+	crawler.addPaintkit(listing.HashName)
 
 	//err = json.NewDecoder(resp.Body).Decode(&marketResult)
 

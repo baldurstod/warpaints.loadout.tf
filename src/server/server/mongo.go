@@ -79,3 +79,22 @@ func findWarpaints(weapon string, wear string) ([]bson.M, error) {
 	//objectID := res.InsertedID.(primitive.ObjectID)
 	return results, nil
 }
+
+func findPaintkits() ([]Listing, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	filter := bson.D{{"hash_name", primitive.Regex{Pattern: "War Paint", Options: "i"}}}
+
+	cursor, err := warpaintsCollection.Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	var results []Listing
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
