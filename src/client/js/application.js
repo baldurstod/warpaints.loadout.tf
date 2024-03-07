@@ -42,12 +42,9 @@ class Application {
 			case pathname.startsWith('/@weapon'):
 				this.#viewWeapon(pathParams);
 				break;
-			/*case pathname.includes('@warpaint'):
-				this.#pageType = PAGE_TYPE_SHOP;
-				this.#pageSubType = PAGE_SUBTYPE_SHOP_PRODUCTS;
-				this.htmlContent.append(this.#htmlProductsPage);
-				this.#displayProducts();
-				break;*/
+			case pathname.startsWith('/@warpaint'):
+				this.#viewWeapon(pathParams);
+				break;
 			default:
 				this.#navigateTo('/@weapons');
 				break;
