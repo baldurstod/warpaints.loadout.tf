@@ -7,15 +7,19 @@ export class WarpaintElement extends HTMLElement {
 	#doOnce = true;
 	#shadowRoot;
 	#htmlPicture;
+	#htmlName;
 	#warpaint;
 	#visible = false;
-	#initialized = false;
 
 	constructor() {
 		super();
 		this.#shadowRoot = this.attachShadow({ mode: 'closed' });
 		shadowRootStyle(this.#shadowRoot, warpaintCSS);
 		this.#htmlPicture = createElement('img', {
+			parent: this.#shadowRoot,
+		});
+		this.#htmlName = createElement('div', {
+			class: 'name',
 			parent: this.#shadowRoot,
 		})
 
@@ -43,6 +47,7 @@ export class WarpaintElement extends HTMLElement {
 	#refresh() {
 		if (this.#visible) {
 			this.#htmlPicture.src = STEAM_ECONOMY_IMAGE_PREFIX + this.#warpaint?.iconURL;
+			this.#htmlName.innerText = this.#warpaint?.name;
 		}
 	}
 

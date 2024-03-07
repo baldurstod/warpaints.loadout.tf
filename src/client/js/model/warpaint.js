@@ -7,6 +7,7 @@ export class Warpaint {
 	#sellListings;
 	#sellPriceTime;
 	#hashName;
+	#name;
 	#classID;
 	constructor(json) {
 		this.#paintkit = json.paintkit;
@@ -17,6 +18,7 @@ export class Warpaint {
 		this.#sellListings = json.sell_listings;
 		this.#sellPriceTime = json.sell_price_time;
 		this.#hashName = json.hash_name;
+		this.#name = json.name;
 		this.#classID = json.classid;
 	}
 
@@ -50,6 +52,10 @@ export class Warpaint {
 
 	get hashName() {
 		return this.#hashName;
+	}
+
+	get name() {
+		return this.#name;
 	}
 
 	get classID() {
