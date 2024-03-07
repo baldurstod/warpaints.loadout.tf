@@ -16,22 +16,21 @@ var re = strings.NewReplacer("Festivized", "", "Specialized", "", "Professional"
 
 var paintkitRegexp = regexp.MustCompile("(.*) War Paint")
 
+var crawler *Crawler
+
 type Crawler struct {
 	config    *Config
 	startPage int
 	paintkits map[string]struct{}
 }
 
-func StartCrawler(config *Config) *Crawler {
-	crawler := Crawler{config: config, paintkits: make(map[string]struct{})}
+func StartCrawler(config *Config) {
+	crawler = &Crawler{config: config, paintkits: make(map[string]struct{})}
 	crawler.initPaintkits()
 	go crawler.Start()
-
-	return &crawler
 }
 
 func (crawler *Crawler) initPaintkits() {
-	log.Println("results")
 	paintkits, err := findPaintkits()
 	if err != nil {
 		return
@@ -118,6 +117,18 @@ func (crawler *Crawler) processListing(listing *Listing) error {
 	//err = json.NewDecoder(resp.Body).Decode(&marketResult)
 
 	return nil
+}
+
+func (crawler *Crawler) getPaintkits() []string {
+	var paintkits []string
+
+	for name, _ := range crawler.paintkits {
+		//crawler.addPaintkit(paintkit.HashName)
+		paintkits = append(paintkits, name)
+		log.Println(name)
+	}
+
+	return paintkits
 }
 
 func cleanupName(name string) string {

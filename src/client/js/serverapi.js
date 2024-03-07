@@ -21,6 +21,13 @@ export class ServerAPI {
 		}
 	}
 
+	static async getWarpaints(wear) {
+		return this.#fetchAPI('get-warpaints', 1,
+			{
+				wear: wear,
+			}
+		);
+	}
 
 	static async getWeapon(weapon, wear) {
 		return this.#fetchAPI('get-weapon', 1,

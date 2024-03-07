@@ -13,7 +13,7 @@ import english from '../json/i18n/english.json';
 import { MainContent } from './view/maincontent.js';
 import { Warpaint } from './model/warpaint.js';
 import { ServerAPI } from './serverapi.js';
-import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, WEAR_LEVELS } from './constants.js';
+import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WARPAINTS, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, WEAR_LEVELS } from './constants.js';
 import { Controller } from './controller.js';
 import { EVENT_TOOLBAR_WEAR_SELECTED } from './controllerevents.js';
 
@@ -51,6 +51,10 @@ class Application {
 		this.#wearFilter = WEAR_LEVELS[0];
 
 		switch (true) {
+			case pathname.startsWith('/@warpaints'):
+				this.#pageType = PAGE_TYPE_WARPAINTS;
+				this.#viewWarpaints(pathParams);
+				break;
 			case pathname.startsWith('/@weapons'):
 				this.#pageType = PAGE_TYPE_WEAPONS;
 				break;
@@ -77,6 +81,21 @@ class Application {
 		this.#startup();
 	}
 
+	async #viewWarpaints(pathParams) {
+		const wear = this.#checkWear(decodeURIComponent(pathParams[1]));
+		this.#wearFilter = wear;
+		this.#appToolbar.setWear(wear);
+
+		const response = await ServerAPI.getWarpaints(wear) ?? [];
+		console.log(response);
+		const warpaints = [];
+		for (const listing of response) {
+			const warpaint = new Warpaint(listing);
+			warpaints.push(warpaint);
+		}
+		this.#appContent.addWarpaints(warpaints);
+	}
+
 	async #viewWeapon(pathParams) {
 		const weaponName = decodeURIComponent(pathParams[1]);
 		const wear = this.#checkWear(decodeURIComponent(pathParams[2]));
@@ -86,7 +105,7 @@ class Application {
 
 		this.#appToolbar.setWear(wear);
 
-		const response = await ServerAPI.getWeapon(weaponName, wear);
+		const response = await ServerAPI.getWeapon(weaponName, wear) ?? [];
 		console.log(response);
 		const warpaints = [];
 		for (const listing of response) {

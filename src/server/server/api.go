@@ -42,6 +42,10 @@ func (handler ApiHandler) getWarpaints(w http.ResponseWriter, r *http.Request, b
 
 	params := p.(map[string]interface{})
 	log.Println(params)
+
+	paintkits := crawler.getPaintkits()
+
+	jsonSuccess(w, r, paintkits)
 }
 
 func (handler ApiHandler) getWeapon(w http.ResponseWriter, r *http.Request, body *map[string]interface{}) {
