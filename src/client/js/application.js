@@ -145,6 +145,8 @@ class Application {
 		switch (this.#pageType) {
 			case PAGE_TYPE_WARPAINT:
 				return `/@warpaint/${encodeURIComponent(this.#weaponFilter)}/${encodeURIComponent(this.#wearFilter)}`
+			case PAGE_TYPE_WARPAINTS:
+				return `/@warpaints/${encodeURIComponent(this.#wearFilter)}`
 		}
 	}
 

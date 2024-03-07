@@ -3,7 +3,7 @@ package server
 import (
 	"encoding/json"
 	"errors"
-	"log"
+	_"log"
 	"net/http"
 )
 
@@ -41,11 +41,19 @@ func (handler ApiHandler) getWarpaints(w http.ResponseWriter, r *http.Request, b
 	}
 
 	params := p.(map[string]interface{})
-	log.Println(params)
+	//log.Println(params)
 
-	paintkits := crawler.getPaintkits()
 
-	jsonSuccess(w, r, paintkits)
+	results, err := findPaintkitsByWear(params["wear"].(string))
+	if err != nil {
+		jsonError(w, r, errors.New("Error while getting warpaints"))
+	}
+
+	jsonSuccess(w, r, results)
+
+	//paintkits := crawler.getPaintkits()
+
+	//jsonSuccess(w, r, paintkits)
 }
 
 func (handler ApiHandler) getWeapon(w http.ResponseWriter, r *http.Request, body *map[string]interface{}) {
@@ -59,7 +67,7 @@ func (handler ApiHandler) getWeapon(w http.ResponseWriter, r *http.Request, body
 
 	results, err := findWarpaints(params["weapon"].(string), params["wear"].(string))
 	if err != nil {
-		jsonError(w, r, errors.New("Error while getting warpaints"))
+		jsonError(w, r, errors.New("Error while getting weapon"))
 	}
 
 	jsonSuccess(w, r, results)
