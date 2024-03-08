@@ -69,16 +69,34 @@ func (crawler *Crawler) addWeapon(hashName string) {
 		return
 	}
 
+	largest := 0
+	largestName := ""
 	for name, _ := range crawler.paintkits {
+		l := len(name)
+		if l <= largest {
+			continue
+		}
+
 		if strings.HasPrefix(hashName, name) {
+			largestName = name
+			largest = l
+			/*
 			hashName = strings.Replace(hashName, name, "", -1)
 
 			hashName = strings.TrimSpace(wearReplacer.Replace(hashName))
 
 			crawler.weapons[hashName] = struct{}{}
-			return
+			return*/
 		}
 	}
+
+	if largest > 0 {
+		hashName = strings.Replace(hashName, largestName, "", -1)
+		hashName = strings.TrimSpace(wearReplacer.Replace(hashName))
+
+		crawler.weapons[hashName] = struct{}{}
+	}
+
 /*
 
 	res := paintkitRegexp.FindStringSubmatch(hashName)
