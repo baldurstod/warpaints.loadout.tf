@@ -14,7 +14,21 @@ img{
 	width: 100%;
 }
 
-.name{
+.title{
 	position: absolute;
 	bottom: 0;
+	text-align: center;
+	width: 100%;
+	font-size: 1.3rem;
+	text-wrap: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+:host(:hover){
+	background-color: rgb(150, 150, 150);
+}
+
+:host(:hover) > .title{
+	filter: invert(75%);
 }
