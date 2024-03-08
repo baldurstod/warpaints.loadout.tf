@@ -22,6 +22,7 @@ func (handler ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	action, ok := body["action"]
 	if !ok {
 		jsonError(w, r, errors.New("Bad request: no action parameter"))
+		return
 	}
 
 	switch action {
@@ -38,6 +39,7 @@ func (handler ApiHandler) getWarpaints(w http.ResponseWriter, r *http.Request, b
 	p, ok := (*body)["params"]
 	if !ok {
 		jsonError(w, r, errors.New("Missing params in request"))
+		return
 	}
 
 	params := p.(map[string]interface{})
@@ -47,6 +49,7 @@ func (handler ApiHandler) getWarpaints(w http.ResponseWriter, r *http.Request, b
 	results, err := findPaintkitsByWear(params["wear"].(string))
 	if err != nil {
 		jsonError(w, r, errors.New("Error while getting warpaints"))
+		return
 	}
 
 	jsonSuccess(w, r, results)
@@ -60,6 +63,7 @@ func (handler ApiHandler) getWeapon(w http.ResponseWriter, r *http.Request, body
 	p, ok := (*body)["params"]
 	if !ok {
 		jsonError(w, r, errors.New("Missing params in request"))
+		return
 	}
 
 	params := p.(map[string]interface{})
@@ -68,6 +72,7 @@ func (handler ApiHandler) getWeapon(w http.ResponseWriter, r *http.Request, body
 	results, err := findWarpaints(params["weapon"].(string), params["wear"].(string))
 	if err != nil {
 		jsonError(w, r, errors.New("Error while getting weapon"))
+		return
 	}
 
 	jsonSuccess(w, r, results)
