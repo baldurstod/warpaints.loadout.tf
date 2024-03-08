@@ -57,6 +57,7 @@ class Application {
 				break;
 			case pathname.startsWith('/@weapons'):
 				this.#pageType = PAGE_TYPE_WEAPONS;
+				this.#viewWeapons();
 				break;
 			case pathname.startsWith('/@weapon'):
 				this.#pageType = PAGE_TYPE_WEAPON;
@@ -94,6 +95,26 @@ class Application {
 			warpaints.push(warpaint);
 		}
 		this.#appContent.addWarpaints(warpaints);
+	}
+
+	async #viewWeapons() {
+		/*
+		const weaponName = decodeURIComponent(pathParams[1]);
+		const wear = this.#checkWear(decodeURIComponent(pathParams[2]));
+
+		this.#weaponFilter = weaponName;
+		this.#wearFilter = wear;
+
+		this.#appToolbar.setWear(wear);*/
+
+		const response = await ServerAPI.getWeapons() ?? [];
+		console.log(response);
+		/*const warpaints = [];
+		for (const listing of response) {
+			const warpaint = new Warpaint(listing);
+			warpaints.push(warpaint);
+		}
+		this.#appContent.addWarpaints(warpaints);*/
 	}
 
 	async #viewWeapon(pathParams) {

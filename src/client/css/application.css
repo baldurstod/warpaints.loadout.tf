@@ -4,3 +4,7 @@
 	display: flex;
 	flex-direction: column;
 }
+
+loadout-warpaint:hover{
+	background-color: rgb(150, 150, 150);
+}

@@ -37,4 +37,8 @@ export class ServerAPI {
 			}
 		);
 	}
+
+	static async getWeapons() {
+		return this.#fetchAPI('get-weapons', 1);
+	}
 }

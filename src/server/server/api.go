@@ -30,6 +30,8 @@ func (handler ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		handler.getWarpaints(w, r, &body)
 	case "get-weapon":
 		handler.getWeapon(w, r, &body)
+	case "get-weapons":
+		handler.getWeapons(w, r)
 	default:
 		jsonError(w, r, NotFoundError{})
 	}
@@ -57,6 +59,10 @@ func (handler ApiHandler) getWarpaints(w http.ResponseWriter, r *http.Request, b
 	//paintkits := crawler.getPaintkits()
 
 	//jsonSuccess(w, r, paintkits)
+}
+
+func (handler ApiHandler) getWeapons(w http.ResponseWriter, r *http.Request) {
+	jsonSuccess(w, r, crawler.getWeapons())
 }
 
 func (handler ApiHandler) getWeapon(w http.ResponseWriter, r *http.Request, body *map[string]interface{}) {

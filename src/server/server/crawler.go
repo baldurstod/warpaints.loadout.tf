@@ -27,7 +27,7 @@ type Crawler struct {
 }
 
 func StartCrawler(config *Config) {
-	crawler = &Crawler{config: config, paintkits: make(map[string]struct{})}
+	crawler = &Crawler{config: config, paintkits: make(map[string]struct{}), weapons: make(map[string]struct{})}
 	crawler.initPaintkits()
 	crawler.initWeapons()
 	go crawler.Start()
@@ -75,7 +75,7 @@ func (crawler *Crawler) addWeapon(hashName string) {
 
 			hashName = strings.TrimSpace(wearReplacer.Replace(hashName))
 
-			crawler.paintkits[hashName] = struct{}{}
+			crawler.weapons[hashName] = struct{}{}
 			return
 		}
 	}
