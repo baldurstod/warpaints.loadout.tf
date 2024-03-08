@@ -99,6 +99,25 @@ func findPaintkits() ([]Listing, error) {
 	return results, nil
 }
 
+func findAll() ([]Listing, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	filter := bson.D{}
+
+	cursor, err := warpaintsCollection.Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	var results []Listing
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
 func findPaintkitsByWear(wear string) ([]Listing, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

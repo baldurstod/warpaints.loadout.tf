@@ -13,6 +13,7 @@ import (
 
 var MARKET_RENDER_URL = "https://steamcommunity.com/market/search/render/?norender=1"
 var re = strings.NewReplacer("Festivized", "", "Specialized", "", "Professional", "", "Killstreak", "")
+var wearReplacer = strings.NewReplacer("(Factory New)", "", "(Minimal Wear)", "", "(Field-Tested)", "", "(Well-Worn)", "", "(Battle Scarred)", "")
 
 var paintkitRegexp = regexp.MustCompile("(.*) War Paint")
 
@@ -22,11 +23,13 @@ type Crawler struct {
 	config    *Config
 	startPage int
 	paintkits map[string]struct{}
+	weapons map[string]struct{}
 }
 
 func StartCrawler(config *Config) {
 	crawler = &Crawler{config: config, paintkits: make(map[string]struct{})}
 	crawler.initPaintkits()
+	crawler.initWeapons()
 	go crawler.Start()
 }
 
@@ -41,6 +44,17 @@ func (crawler *Crawler) initPaintkits() {
 	}
 }
 
+func (crawler *Crawler) initWeapons() {
+	weapons, err := findAll()
+	if err != nil {
+		return
+	}
+
+	for _, weapon := range weapons {
+		crawler.addWeapon(weapon.HashName)
+	}
+}
+
 func (crawler *Crawler) addPaintkit(hashName string) {
 	res := paintkitRegexp.FindStringSubmatch(hashName)
 	if res != nil && len(res) == 2 {
@@ -48,6 +62,30 @@ func (crawler *Crawler) addPaintkit(hashName string) {
 	}
 }
 
+func (crawler *Crawler) addWeapon(hashName string) {
+	// Discard War Paint
+	res := paintkitRegexp.FindStringSubmatch(hashName)
+	if res != nil {
+		return
+	}
+
+	for name, _ := range crawler.paintkits {
+		if strings.HasPrefix(hashName, name) {
+			hashName = strings.Replace(hashName, name, "", -1)
+
+			hashName = strings.TrimSpace(wearReplacer.Replace(hashName))
+
+			crawler.paintkits[hashName] = struct{}{}
+			return
+		}
+	}
+/*
+
+	res := paintkitRegexp.FindStringSubmatch(hashName)
+	if res != nil && len(res) == 2 {
+		crawler.weapons[res[1]] = struct{}{}
+	}*/
+}
 
 func (crawler *Crawler) Start() {
 	crawler.startPage = 0
@@ -113,6 +151,7 @@ func (crawler *Crawler) processListing(listing *Listing) error {
 
 	addListing(listing)
 	crawler.addPaintkit(listing.HashName)
+	crawler.addWeapon(listing.HashName)
 
 	//err = json.NewDecoder(resp.Body).Decode(&marketResult)
 
@@ -123,12 +162,20 @@ func (crawler *Crawler) getPaintkits() []string {
 	var paintkits []string
 
 	for name, _ := range crawler.paintkits {
-		//crawler.addPaintkit(paintkit.HashName)
 		paintkits = append(paintkits, name)
-		log.Println(name)
 	}
 
 	return paintkits
+}
+
+func (crawler *Crawler) getWeapons() []string {
+	var weapons []string
+
+	for name, _ := range crawler.weapons {
+		weapons = append(weapons, name)
+	}
+
+	return weapons
 }
 
 func cleanupName(name string) string {
