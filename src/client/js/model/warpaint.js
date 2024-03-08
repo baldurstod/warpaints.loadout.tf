@@ -22,6 +22,12 @@ export class Warpaint {
 		this.#classID = json.classid;
 	}
 
+	getWarPaintName() {
+		let name = this.#hashName.replace(/\((.*)\)$/, '');
+		name = name.replace('War Paint', '');
+		return name.trim();
+	}
+
 	get paintkit() {
 		return this.#paintkit;
 	}

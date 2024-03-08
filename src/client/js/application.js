@@ -15,7 +15,7 @@ import { Warpaint } from './model/warpaint.js';
 import { ServerAPI } from './serverapi.js';
 import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WARPAINTS, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, WEAR_LEVELS } from './constants.js';
 import { Controller } from './controller.js';
-import { EVENT_TOOLBAR_WEAR_SELECTED } from './controllerevents.js';
+import { EVENT_TOOLBAR_WEAR_SELECTED, EVENT_WARPAINT_CLICK } from './controllerevents.js';
 
 documentStyle(htmlCSS);
 documentStyle(varsCSS);
@@ -149,6 +149,7 @@ class Application {
 
 	#initListeners() {
 		Controller.addEventListener(EVENT_TOOLBAR_WEAR_SELECTED, event => this.#changeWear(event.detail));
+		Controller.addEventListener(EVENT_WARPAINT_CLICK, event => this.#warPaintClick(event.detail));
 	}
 
 	#changeWear(wear) {
@@ -156,18 +157,32 @@ class Application {
 		//const pathname = document.location.pathname;
 		//const pathParams = pathname.substring(1).split('/');
 
-		const url = this.#buildURL();
-		if (url) {
-			this.#navigateTo(url);
+		this.#buildURL(this.#pageType, this.#weaponFilter, this.#wearFilter);
+	}
+
+	#warPaintClick(warpaint) {
+		console.info(warpaint);
+		switch (this.#pageType) {
+			case PAGE_TYPE_WARPAINTS:
+				this.#buildURL(PAGE_TYPE_WARPAINT, warpaint.getWarPaintName(), this.#wearFilter);
+				break;
+			default:
+				break;
 		}
 	}
 
-	#buildURL() {
-		switch (this.#pageType) {
+	#buildURL(pageType, weaponFilter, wearFilter) {
+		let url;
+		switch (pageType) {
 			case PAGE_TYPE_WARPAINT:
-				return `/@warpaint/${encodeURIComponent(this.#weaponFilter)}/${encodeURIComponent(this.#wearFilter)}`
+				url = `/@warpaint/${encodeURIComponent(weaponFilter)}/${encodeURIComponent(wearFilter)}`;
+				break;
 			case PAGE_TYPE_WARPAINTS:
-				return `/@warpaints/${encodeURIComponent(this.#wearFilter)}`
+				url = `/@warpaints/${encodeURIComponent(wearFilter)}`;
+				break;
+		}
+		if (url) {
+			this.#navigateTo(url);
 		}
 	}
 

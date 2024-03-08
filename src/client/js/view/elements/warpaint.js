@@ -1,5 +1,7 @@
-import { createElement, shadowRootStyle } from "harmony-ui";
-import { STEAM_ECONOMY_IMAGE_PREFIX } from "../../constants";
+import { createElement, shadowRootStyle } from 'harmony-ui';
+import { STEAM_ECONOMY_IMAGE_PREFIX } from '../../constants.js';
+import { Controller } from '../../controller.js';
+import { EVENT_WARPAINT_CLICK } from '../../controllerevents.js';
 
 import warpaintCSS from '../../../css/warpaint.css';
 
@@ -15,14 +17,14 @@ export class WarpaintElement extends HTMLElement {
 		super();
 		this.#shadowRoot = this.attachShadow({ mode: 'closed' });
 		shadowRootStyle(this.#shadowRoot, warpaintCSS);
+		this.#shadowRoot.addEventListener('click', () => Controller.dispatchEvent(new CustomEvent(EVENT_WARPAINT_CLICK, { detail: this.#warpaint })));
 		this.#htmlPicture = createElement('img', {
 			parent: this.#shadowRoot,
 		});
 		this.#htmlName = createElement('div', {
-			class: 'name',
+			class: 'title',
 			parent: this.#shadowRoot,
-		})
-
+		});
 	}
 
 	connectedCallback() {
@@ -47,12 +49,18 @@ export class WarpaintElement extends HTMLElement {
 	#refresh() {
 		if (this.#visible) {
 			this.#htmlPicture.src = STEAM_ECONOMY_IMAGE_PREFIX + this.#warpaint?.iconURL;
-			this.#htmlName.innerText = this.#warpaint?.name;
+			this.#htmlName.innerText = this.#getTitle();
 		}
 	}
 
+	#getTitle() {
+		let title = this.#warpaint?.name;
+		title = title.replace(/\((.*)\)$/, '');
+		title = title.replace('War Paint', '');
+		return title;
+	}
+
 	set warpaint(warpaint) {
-		console.info(warpaint);
 		this.#warpaint = warpaint;
 		this.#refresh();
 	}

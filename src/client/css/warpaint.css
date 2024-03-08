@@ -8,6 +8,7 @@
 	display: block;
 	overflow: hidden;
 	position: relative;
+	cursor: pointer;
 }
 
 img{
