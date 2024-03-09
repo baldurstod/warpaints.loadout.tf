@@ -159,6 +159,9 @@ class Application {
 			case PAGE_TYPE_WEAPON:
 				open(`${STEAM_MARKET_SEARCH_URL}"${warpaint.hashName.replace(/\((.*)\)$/, '')}"`);//Remove wear
 				break;
+			case PAGE_TYPE_WEAPONS:
+				this.#buildURL(PAGE_TYPE_WEAPON, warpaint, this.#wearFilter);
+				break;
 			default:
 				break;
 		}
@@ -172,6 +175,9 @@ class Application {
 				break;
 			case PAGE_TYPE_WARPAINTS:
 				url = `/@warpaints/${encodeURIComponent(wearFilter)}`;
+				break;
+			case PAGE_TYPE_WEAPON:
+				url = `/@weapon/${encodeURIComponent(weaponFilter)}/${encodeURIComponent(wearFilter)}`;
 				break;
 		}
 		if (url) {

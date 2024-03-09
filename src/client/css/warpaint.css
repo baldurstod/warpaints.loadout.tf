@@ -29,6 +29,9 @@ img{
 :host(:hover){
 	background-color: rgb(150, 150, 150);
 }
+:host(:hover) .title{
+	text-wrap: unset;
+}
 
 :host(:hover) > .title{
 	filter: invert(75%);
