@@ -10,11 +10,8 @@ type Config struct {
 		ConnectURI string `json:"connect_uri"`
 		DBName     string `json:"db_name"`
 	} `json:"database"`
-	SessionsFileStore   string `json:"sessions_file_store"`
-	SessionsAuthKey     string `json:"sessions_auth_key"`
-	SessionsEncryptKey  string `json:"sessions_encrypt_key"`
-	PatreonClientID     string `json:"patreon_client_id"`
-	PatreonClientSecret string `json:"patreon_client_secret"`
-	PatreonRedirectURL  string `json:"patreon_redirect_url"`
-	PatreonCreatorID    string `json:"patreon_creator_id"`
+	Crawler struct {
+		UseCrawler bool `default:"false" json:"use_crawler"`
+		PageDelay  int  `default:"10" json:"page_delay"`
+	} `json:"crawler"`
 }

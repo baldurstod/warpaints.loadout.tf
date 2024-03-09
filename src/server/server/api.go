@@ -3,7 +3,7 @@ package server
 import (
 	"encoding/json"
 	"errors"
-	_"log"
+	_ "log"
 	"net/http"
 )
 
@@ -46,7 +46,6 @@ func (handler ApiHandler) getWarpaints(w http.ResponseWriter, r *http.Request, b
 
 	params := p.(map[string]interface{})
 	//log.Println(params)
-
 
 	results, err := findPaintkitsByWear(params["wear"].(string))
 	if err != nil {

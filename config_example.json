@@ -8,11 +8,8 @@
 		"connect_uri": "mongodb://localhost:27017",
 		"db_name": "warpaints"
 	},
-	"sessions_file_store": "",
-	"sessions_auth_key": "",
-	"sessions_encrypt_key": "",
-	"patreon_client_id": "",
-	"patreon_client_secret": "",
-	"patreon_redirect_url": "",
-	"patreon_creator_id": ""
+	"crawler": {
+		"use_crawler": true,
+		"page_delay": 10
+	}
 }

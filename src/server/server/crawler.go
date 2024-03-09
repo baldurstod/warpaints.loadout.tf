@@ -23,14 +23,16 @@ type Crawler struct {
 	config    *Config
 	startPage int
 	paintkits map[string]struct{}
-	weapons map[string]struct{}
+	weapons   map[string]struct{}
 }
 
 func StartCrawler(config *Config) {
 	crawler = &Crawler{config: config, paintkits: make(map[string]struct{}), weapons: make(map[string]struct{})}
 	crawler.initPaintkits()
 	crawler.initWeapons()
-	go crawler.Start()
+	if config.Crawler.UseCrawler {
+		go crawler.Start()
+	}
 }
 
 func (crawler *Crawler) initPaintkits() {
@@ -71,7 +73,7 @@ func (crawler *Crawler) addWeapon(hashName string) {
 
 	largest := 0
 	largestName := ""
-	for name, _ := range crawler.paintkits {
+	for name := range crawler.paintkits {
 		l := len(name)
 		if l <= largest {
 			continue
@@ -81,12 +83,12 @@ func (crawler *Crawler) addWeapon(hashName string) {
 			largestName = name
 			largest = l
 			/*
-			hashName = strings.Replace(hashName, name, "", -1)
+				hashName = strings.Replace(hashName, name, "", -1)
 
-			hashName = strings.TrimSpace(wearReplacer.Replace(hashName))
+				hashName = strings.TrimSpace(wearReplacer.Replace(hashName))
 
-			crawler.weapons[hashName] = struct{}{}
-			return*/
+				crawler.weapons[hashName] = struct{}{}
+				return*/
 		}
 	}
 
@@ -97,19 +99,20 @@ func (crawler *Crawler) addWeapon(hashName string) {
 		crawler.weapons[hashName] = struct{}{}
 	}
 
-/*
+	/*
+	   res := paintkitRegexp.FindStringSubmatch(hashName)
 
-	res := paintkitRegexp.FindStringSubmatch(hashName)
-	if res != nil && len(res) == 2 {
-		crawler.weapons[res[1]] = struct{}{}
-	}*/
+	   	if res != nil && len(res) == 2 {
+	   		crawler.weapons[res[1]] = struct{}{}
+	   	}
+	*/
 }
 
 func (crawler *Crawler) Start() {
 	crawler.startPage = 0
 	for {
 		crawler.processPage("&sort_column=name&sort_dir=asc&category_440_Quality%5B%5D=tag_paintkitweapon&appid=440")
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(crawler.config.Crawler.PageDelay) * time.Second)
 	}
 }
 
@@ -179,7 +182,7 @@ func (crawler *Crawler) processListing(listing *Listing) error {
 func (crawler *Crawler) getPaintkits() []string {
 	var paintkits []string
 
-	for name, _ := range crawler.paintkits {
+	for name := range crawler.paintkits {
 		paintkits = append(paintkits, name)
 	}
 
@@ -189,7 +192,7 @@ func (crawler *Crawler) getPaintkits() []string {
 func (crawler *Crawler) getWeapons() []string {
 	var weapons []string
 
-	for name, _ := range crawler.weapons {
+	for name := range crawler.weapons {
 		weapons = append(weapons, name)
 	}
 

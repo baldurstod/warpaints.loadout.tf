@@ -14,10 +14,10 @@ import (
 var UseEmbed = "true"
 
 func StartServer(config *Config) {
-	store = initStore(config)
+	/*store = initStore(config)
 	if store == nil {
 		log.Fatal("Can't init session store")
-	}
+	}*/
 
 	handler := initHandlers(config)
 
@@ -38,10 +38,10 @@ func initHandlers(config *Config) *mux.Router {
 		useFS = os.DirFS("build/client")
 	}
 
-	pm := NewPatreonMiddleware(config.PatreonClientID, config.PatreonClientSecret, config.PatreonRedirectURL, config.PatreonCreatorID)
+	//pm := NewPatreonMiddleware(config.PatreonClientID, config.PatreonClientSecret, config.PatreonRedirectURL, config.PatreonCreatorID)
 
 	r := mux.NewRouter()
-	r.Use(pm.middleware)
+	//r.Use(pm.middleware)
 	r.Use(rewriteURL)
 	r.PathPrefix("/api").Handler(&RecoveryHandler{Handler: ApiHandler{}})
 	r.PathPrefix("/").Handler(&RecoveryHandler{Handler: http.FileServer(http.FS(useFS))})
