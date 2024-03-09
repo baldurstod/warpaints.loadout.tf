@@ -13,7 +13,7 @@ import english from '../json/i18n/english.json';
 import { MainContent } from './view/maincontent.js';
 import { Warpaint } from './model/warpaint.js';
 import { ServerAPI } from './serverapi.js';
-import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WARPAINTS, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, WEAR_LEVELS } from './constants.js';
+import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WARPAINTS, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, STEAM_MARKET_SEARCH_URL, WEAR_LEVELS } from './constants.js';
 import { Controller } from './controller.js';
 import { EVENT_TOOLBAR_WEAR_SELECTED, EVENT_WARPAINT_CLICK } from './controllerevents.js';
 
@@ -165,6 +165,10 @@ class Application {
 		switch (this.#pageType) {
 			case PAGE_TYPE_WARPAINTS:
 				this.#buildURL(PAGE_TYPE_WARPAINT, warpaint.getWarPaintName(), this.#wearFilter);
+				break;
+			case PAGE_TYPE_WARPAINT:
+			case PAGE_TYPE_WEAPON:
+				open(`${STEAM_MARKET_SEARCH_URL}${warpaint.hashName.replace(/\((.*)\)$/, '')}`);//Remove wear
 				break;
 			default:
 				break;
