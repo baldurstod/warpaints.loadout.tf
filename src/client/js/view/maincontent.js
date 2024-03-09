@@ -1,6 +1,7 @@
 import { createElement, hide, show } from 'harmony-ui';
 
 export * from './elements/warpaint.js';
+export * from './elements/weapon.js';
 
 export class MainContent {
 	#htmlElement;
@@ -43,9 +44,18 @@ export class MainContent {
 
 	addWarpaints(warpaints) {
 		for (const warpaint of warpaints) {
-			const htmlWarpaint = createElement('loadout-warpaint', {
+			createElement('loadout-warpaint', {
 				parent: this.#htmlWarpaints,
 				warpaint: warpaint
+			});
+		}
+	}
+
+	addWeapons(weapons) {
+		for (const weapon of weapons) {
+			createElement('loadout-weapon', {
+				parent: this.#htmlWarpaints,
+				weapon: weapon
 			});
 		}
 	}

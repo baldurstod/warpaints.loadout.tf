@@ -98,23 +98,12 @@ class Application {
 	}
 
 	async #viewWeapons() {
-		/*
-		const weaponName = decodeURIComponent(pathParams[1]);
-		const wear = this.#checkWear(decodeURIComponent(pathParams[2]));
-
-		this.#weaponFilter = weaponName;
-		this.#wearFilter = wear;
-
-		this.#appToolbar.setWear(wear);*/
-
 		const response = await ServerAPI.getWeapons() ?? [];
-		console.log(response);
-		/*const warpaints = [];
+		const weapons = [];
 		for (const listing of response) {
-			const warpaint = new Warpaint(listing);
-			warpaints.push(warpaint);
+			weapons.push(listing);
 		}
-		this.#appContent.addWarpaints(warpaints);*/
+		this.#appContent.addWeapons(weapons);
 	}
 
 	async #viewWeapon(pathParams) {
@@ -168,7 +157,7 @@ class Application {
 				break;
 			case PAGE_TYPE_WARPAINT:
 			case PAGE_TYPE_WEAPON:
-				open(`${STEAM_MARKET_SEARCH_URL}${warpaint.hashName.replace(/\((.*)\)$/, '')}`);//Remove wear
+				open(`${STEAM_MARKET_SEARCH_URL}"${warpaint.hashName.replace(/\((.*)\)$/, '')}"`);//Remove wear
 				break;
 			default:
 				break;

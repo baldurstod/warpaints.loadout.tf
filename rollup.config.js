@@ -41,6 +41,7 @@ for (const buildOption of BUILD_OPTIONS) {
 					targets: [
 						{src: 'src/client/index.html', dest: 'build/client/'},
 						{src: 'src/client/ads.txt', dest: 'build/client/'},
+						{src: 'src/client/img/', dest: 'build/client/'},
 					]
 				}),
 			]
