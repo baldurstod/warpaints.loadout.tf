@@ -8,7 +8,6 @@ import (
 )
 
 type ApiHandler struct {
-	SteamAPIKey string
 }
 
 func (handler ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
