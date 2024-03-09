@@ -16,6 +16,7 @@ import { ServerAPI } from './serverapi.js';
 import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WARPAINTS, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, STEAM_MARKET_SEARCH_URL, WEAR_LEVELS } from './constants.js';
 import { Controller } from './controller.js';
 import { EVENT_TOOLBAR_WEAR_SELECTED, EVENT_WARPAINT_CLICK } from './controllerevents.js';
+import { GOOGLE_ANALYTICS_ID } from './googleconstants.js';
 
 documentStyle(htmlCSS);
 documentStyle(varsCSS);
