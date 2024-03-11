@@ -90,7 +90,6 @@ class Application {
 		this.#appToolbar.setWear(wear);
 
 		const response = await ServerAPI.getWarpaints(wear) ?? [];
-		console.log(response);
 		const warpaints = [];
 		for (const listing of response) {
 			const warpaint = new Warpaint(listing);
@@ -118,7 +117,6 @@ class Application {
 		this.#appToolbar.setWear(wear);
 
 		const response = await ServerAPI.getWeapon(weaponName, wear) ?? [];
-		console.log(response);
 		const warpaints = [];
 		for (const listing of response) {
 			const warpaint = new Warpaint(listing);
@@ -214,9 +212,9 @@ class Application {
 		);*/
 
 		this.#appToolbar.setMode();
-		if (ENABLE_PATREON_BASE) {
+		/*if (ENABLE_PATREON_BASE) {
 			(window.adsbygoogle = window.adsbygoogle || []).push({});
-		}
+		}*/
 	}
 
 	#initCSS() {

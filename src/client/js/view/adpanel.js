@@ -1,23 +1,35 @@
-import { createElement, I18n } from 'harmony-ui';
-import { ADSBYGOOGLE_INS, ADSBYGOOGLE_SRC } from '../googleconstants';
+import { createElement } from 'harmony-ui';
+import { setTimeoutPromise } from 'harmony-utils';
+import { ADSBYGOOGLE_INS, ADSBYGOOGLE_SRC } from '../googleconstants.js';
 
 import adCSS from '../../css/ad.css';
 
+const AD_DELAY = 1000;
+
 export class AdPanel {
 	#htmlElement;
-	#htmlAdContent;
 
 	#initHTML() {
 		this.#htmlElement = createElement('div', {
 			attachShadow: { mode: 'closed' },
 			adoptStyle: adCSS,
-		}).host;
+		});
 
+
+		const sc = createElement('script', {src: ADSBYGOOGLE_SRC, async: 1});
 		const ad = createElement('div', {
 			parent: document.body,
 			style: 'width:300px; height:auto;position:absolute;top:10rem;right:0;z-index:500;',
 			innerHTML: ADSBYGOOGLE_INS,
 		});
+
+		this.#htmlElement.append(sc);
+		(window.adsbygoogle = window.adsbygoogle || []).push({});
+
+		(async () => {
+			await setTimeoutPromise(AD_DELAY);
+			this.#htmlElement.append(ad);
+		})();
 
 		return this.#htmlElement;
 	}
