@@ -19,16 +19,3 @@ body{
 	color: var(--theme-text-color);
 	display: flex;
 }
-.application{
-	display: flex;
-	flex-direction: column;
-	height:100%;
-	width:100%;
-
-	--mini-character-icon-width: 60px;
-	--item-icon-width: 150px;
-	--item-icon-height: calc(var(--item-icon-width)*170/256);
-	--hero-icon-width: 150px;
-	--hero-icon-height: calc(var(--hero-icon-width)*144/256);
-	--item-selector-columns: 2;
-}

@@ -16,7 +16,6 @@ export class AdPanel {
 		const ad = createElement('div', {
 			parent: document.body,
 			style: 'width:300px; height:auto;position:absolute;top:10rem;right:0;z-index:500;',
-			class: 'application',
 			innerHTML: ADSBYGOOGLE_INS,
 		});
 
