@@ -3,13 +3,3 @@
 	overflow: hidden;
 }
 
-.warpaints{
-	display: flex;
-	flex-wrap: wrap;
-	overflow: auto;
-	width: 100%;
-	height: 100%;
-	place-content: baseline center;
-	padding-bottom: 20rem;
-	box-sizing: border-box;
-}

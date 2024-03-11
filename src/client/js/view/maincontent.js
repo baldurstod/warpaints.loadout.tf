@@ -1,6 +1,7 @@
 import { createElement, hide, show } from 'harmony-ui';
 
 import mainContentCSS from '../../css/maincontent.css';
+import warpaintsCSS from '../../css/warpaints.css';
 
 export * from './elements/warpaint.js';
 export * from './elements/weapon.js';
@@ -30,7 +31,8 @@ export class MainContent {
 			adoptStyle: mainContentCSS,
 			childs: [
 				this.#htmlWarpaints = createElement('div', {
-					class: 'warpaints',
+					attachShadow: { mode: 'closed' },
+					adoptStyle: warpaintsCSS,
 				}),
 			],
 		});
