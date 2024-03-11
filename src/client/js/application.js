@@ -1,10 +1,10 @@
 import { I18n, createElement, documentStyle, shadowRootStyle } from 'harmony-ui';
+import { themeCSS } from 'harmony-css';
 import { ENABLE_PATREON_BASE, PRODUCTION } from './bundleoptions.js';
 import { Toolbar } from './view/toolbar.js';
 
 
 import htmlCSS from '../css/html.css';
-import varsCSS from '../css/vars.css';
 import applicationCSS from '../css/application.css';
 import mainPanelCSS from '../css/mainpanel.css';
 
@@ -19,7 +19,7 @@ import { GOOGLE_ANALYTICS_ID } from './googleconstants.js';
 import { AdPanel } from './view/adpanel.js';
 
 documentStyle(htmlCSS);
-documentStyle(varsCSS);
+documentStyle(themeCSS);
 
 class Application {
 	#htmlElement;

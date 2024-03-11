@@ -5,13 +5,13 @@ html{
 	font-size: var(--font-size);
 }
 body{
-	accent-color: var(--accent-primary);
-	scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg);
+	accent-color: var(--theme-accent-primary);
+	scrollbar-color: var(--theme-scrollbar-color) var(--theme-scrollbar-bg);
 	font-family: Verdana, sans-serif;
 	margin:0rem;
 	overflow: hidden;
 	justify-content: center;
-	background-color: var(--background-primary);
+	background-color: var(--theme-background-primary);
 
 	height:100%;
 	width:100%;

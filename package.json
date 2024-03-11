@@ -10,6 +10,7 @@
 		"rollup-plugin-import-css": "^3.5.0"
 	},
 	"dependencies": {
+		"harmony-css": "github:baldurstod/harmony-css",
 		"harmony-ui": "github:baldurstod/harmony-ui",
 		"harmony-utils": "github:baldurstod/harmony-utils"
 	}
