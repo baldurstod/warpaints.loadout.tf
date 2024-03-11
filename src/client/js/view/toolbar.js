@@ -4,6 +4,8 @@ import { Controller } from '../controller'
 import { EVENT_TOOLBAR_WEAR_SELECTED } from '../controllerevents';
 import { WEAR_LEVELS } from '../constants';
 
+import toolbarCSS from '../../css/toolbar.css';
+
 function createButton(svg, eventName, i18n) {
 	return createElement('div', {
 		class: 'toolbar-button',
@@ -41,7 +43,8 @@ export class Toolbar {
 
 	#initHTML() {
 		this.#htmlElement = createElement('div', {
-			class: 'toolbar',
+			attachShadow: { mode: 'closed' },
+			adoptStyle: toolbarCSS,
 			childs: [
 				createElement('div', {
 					class: 'toolbar-items',

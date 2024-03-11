@@ -6,8 +6,7 @@ import { Toolbar } from './view/toolbar.js';
 import htmlCSS from '../css/html.css';
 import varsCSS from '../css/vars.css';
 import applicationCSS from '../css/application.css';
-import toolbarCSS from '../css/toolbar.css';
-import maincontentCSS from '../css/maincontent.css';
+import mainPanelCSS from '../css/mainpanel.css';
 
 import english from '../json/i18n/english.json';
 import { MainContent } from './view/maincontent.js';
@@ -17,6 +16,7 @@ import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WARPAINTS, PAGE_TYPE_W
 import { Controller } from './controller.js';
 import { EVENT_TOOLBAR_WEAR_SELECTED, EVENT_WARPAINT_CLICK } from './controllerevents.js';
 import { GOOGLE_ANALYTICS_ID } from './googleconstants.js';
+import { AdPanel } from './view/adpanel.js';
 
 documentStyle(htmlCSS);
 documentStyle(varsCSS);
@@ -26,6 +26,7 @@ class Application {
 	#shadowRoot;
 	#appToolbar = new Toolbar();
 	#appContent = new MainContent();
+	#appAd = new AdPanel();
 	#pageType = PAGE_TYPE_UNKNOWN;
 	#weaponFilter;
 	#warpaintFilter;
@@ -188,18 +189,29 @@ class Application {
 
 	#initHTML() {
 		this.#htmlElement = createElement('div', {
-			className: 'application',
 			parent: document.body,
+			attachShadow: { mode: 'closed' },
+			adoptStyle: applicationCSS,
+			childs: [
+				this.#appToolbar.htmlElement,
+				createElement('div', {
+					parent: document.body,
+					attachShadow: { mode: 'closed' },
+					adoptStyle: mainPanelCSS,
+					childs: [
+						this.#appContent.htmlElement,
+						this.#appAd.htmlElement,
+					],
+				}),
+			],
 		});
-		this.#shadowRoot = this.#htmlElement.attachShadow({ mode: 'closed' });
-		I18n.observeElement(this.#shadowRoot);
-		this.#initCSS();
+		//this.#shadowRoot = this.#htmlElement.attachShadow({ mode: 'closed' });
+		//I18n.observeElement(this.#shadowRoot);
+		//this.#initCSS();
 
-		this.#shadowRoot.append(
-			this.#appToolbar.htmlElement,
-			this.#appContent.htmlElement,
+		/*this.#shadowRoot.append(
 			//this.#appFooter.htmlElement,
-		);
+		);*/
 
 		this.#appToolbar.setMode();
 		if (ENABLE_PATREON_BASE) {
@@ -208,9 +220,9 @@ class Application {
 	}
 
 	#initCSS() {
-		shadowRootStyle(this.#shadowRoot, applicationCSS);
+		/*shadowRootStyle(this.#shadowRoot, applicationCSS);
 		shadowRootStyle(this.#shadowRoot, maincontentCSS);
-		shadowRootStyle(this.#shadowRoot, toolbarCSS);
+		shadowRootStyle(this.#shadowRoot, toolbarCSS);*/
 	}
 
 	#setupAnalytics() {
