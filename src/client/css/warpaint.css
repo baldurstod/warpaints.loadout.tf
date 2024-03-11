@@ -24,15 +24,16 @@ img{
 	text-wrap: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	padding: 0.2rem;
 }
 
 :host(:hover){
-	background-color: rgb(150, 150, 150);
+	background-color: var(--theme-background-quaternary-invert);
 }
 :host(:hover) .title{
 	text-wrap: unset;
 }
 
 :host(:hover) > .title{
-	filter: invert(75%);
+	filter: invert(100%);
 }
