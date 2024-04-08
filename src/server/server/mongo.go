@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -57,6 +58,10 @@ func findWarpaints(weapon string, wear string) ([]bson.M, error) {
 
 	//filter := bson.D{{"hash_name" : {$regex : weapon}}
 	//filter := bson.D{{"hash_name", bson.D{{"$regex", weapon}, {"$options", "i"}}}}
+
+	weapon = strings.Replace(weapon, "(", "\\(", -1)
+	weapon = strings.Replace(weapon, ")", "\\)", -1)
+
 	filter := bson.D{
 		{"hash_name", primitive.Regex{Pattern: weapon, Options: "i"}},
 		{"hash_name", primitive.Regex{Pattern: wear, Options: "i"}},

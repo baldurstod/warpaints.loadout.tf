@@ -23,7 +23,7 @@ export class Warpaint {
 	}
 
 	getWarPaintName() {
-		let name = this.#hashName.replace(/\((.*)\)$/, '');
+		let name = this.#hashName.replace(/\(([^(]*)\)$/, '');
 		name = name.replace('War Paint', '');
 		return name.trim();
 	}

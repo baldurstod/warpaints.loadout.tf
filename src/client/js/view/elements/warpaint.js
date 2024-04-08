@@ -55,7 +55,7 @@ export class WarpaintElement extends HTMLElement {
 
 	#getTitle() {
 		let title = this.#warpaint?.name;
-		title = title.replace(/\((.*)\)$/, '');
+		title = title.replace(/\(([^(]*)\)$/, '');
 		title = title.replace('War Paint', '');
 		return title;
 	}

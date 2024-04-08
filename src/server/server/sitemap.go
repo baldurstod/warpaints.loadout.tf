@@ -1,10 +1,10 @@
 package server
 
 import (
-	_"encoding/json"
+	_ "encoding/json"
 	"encoding/xml"
-	_"errors"
-	_"log"
+	_ "errors"
+	_ "log"
 	"net/http"
 	"net/url"
 )
@@ -29,7 +29,6 @@ func (handler SiteMapHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		set.AddURL("https://warpaints.loadout.tf/@weapon/" + weapon)
 	}
 
-
 	w.Header().Add("Content-Type", "application/xml")
 
 	out, err := xml.MarshalIndent(set, " ", "  ")
@@ -42,19 +41,19 @@ func (handler SiteMapHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 
 type SiteMapURL struct {
 	XMLName xml.Name `xml:"url"`
-	Loc    string   `xml:"loc,omitempty"`
+	Loc     string   `xml:"loc,omitempty"`
 }
 
 type SiteMapURLSet struct {
-	XMLName xml.Name `xml:"http://www.sitemaps.org/schemas/sitemap/0.9 urlset"`
-	URL  []SiteMapURL `xml:"url"`
+	XMLName xml.Name     `xml:"http://www.sitemaps.org/schemas/sitemap/0.9 urlset"`
+	URL     []SiteMapURL `xml:"url"`
 }
 
 func (urlSet *SiteMapURLSet) AddURL(loc string) {
-    Url, err := url.Parse(loc)
-    if err != nil {
+	Url, err := url.Parse(loc)
+	if err != nil {
 		return
-    }
+	}
 
 	urlSet.URL = append(urlSet.URL, SiteMapURL{Loc: Url.String()})
 }
