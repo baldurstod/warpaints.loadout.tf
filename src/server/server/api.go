@@ -31,6 +31,8 @@ func (handler ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		handler.getWeapon(w, r, &body)
 	case "get-weapons":
 		handler.getWeapons(w, r)
+	case "get-warpaint-pictures":
+		handler.getWarpaintPictures(w, r)
 	default:
 		jsonError(w, r, NotFoundError{})
 	}
@@ -80,4 +82,22 @@ func (handler ApiHandler) getWeapon(w http.ResponseWriter, r *http.Request, body
 	}
 
 	jsonSuccess(w, r, results)
+}
+
+func (handler ApiHandler) getWarpaintPictures(w http.ResponseWriter, r *http.Request) {
+	results, err := findWarpaints("War Paint", "Factory New")
+	if err != nil {
+		jsonError(w, r, errors.New("Error while getting weapon"))
+		return
+	}
+
+	pictures := map[string]string{}
+	for _, result := range results {
+
+		res := paintkitRegexp.FindStringSubmatch(result.Name)
+		if res != nil && len(res) == 2 {
+			pictures[res[1]] = result.AssetDescription.IconURL
+		}
+	}
+	jsonSuccess(w, r, pictures)
 }

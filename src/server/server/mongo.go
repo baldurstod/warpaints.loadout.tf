@@ -52,7 +52,7 @@ func addListing(listing *Listing) error {
 	return nil
 }
 
-func findWarpaints(weapon string, wear string) ([]bson.M, error) {
+func findWarpaints(weapon string, wear string) ([]Listing, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -73,7 +73,7 @@ func findWarpaints(weapon string, wear string) ([]bson.M, error) {
 		return nil, err
 	}
 
-	var results []bson.M
+	var results []Listing
 	if err = cursor.All(context.TODO(), &results); err != nil {
 		return nil, err
 	}
