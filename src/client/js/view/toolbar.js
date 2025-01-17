@@ -9,7 +9,7 @@ import toolbarCSS from '../../css/toolbar.css';
 function createButton(svg, eventName, i18n) {
 	return createElement('div', {
 		class: 'toolbar-button',
-		'i18n-title': i18n,
+		i18n: { title: i18n, },
 		innerHTML: svg,
 		events: {
 			click: () => Controller.dispatchEvent(new CustomEvent(eventName)),
@@ -77,7 +77,8 @@ export class Toolbar {
 				createElement('div', {
 					class: 'toolbar-buttons',
 					childs: [
-/*						this.#htmlPlay = createButton(playSVG, EVENT_TOOLBAR_PLAY, '#play'),
+						/*
+						this.#htmlPlay = createButton(playSVG, EVENT_TOOLBAR_PLAY, '#play'),
 						this.#htmlPause = createButton(pauseSVG, EVENT_TOOLBAR_PAUSE, '#pause'),
 						createButton(shareSVG, EVENT_TOOLBAR_SHARE, '#share_current_loadout'),
 						createButton(photoCameraSVG, EVENT_TOOLBAR_PICTURE, '#save_picture'),
