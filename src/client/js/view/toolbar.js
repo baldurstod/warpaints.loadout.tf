@@ -1,8 +1,7 @@
-import { createElement, hide, } from 'harmony-ui';
-
-import { Controller } from '../controller'
-import { EVENT_TOOLBAR_WEAR_SELECTED } from '../controllerevents';
+import { createElement, createShadowRoot, hide, } from 'harmony-ui';
 import { WEAR_LEVELS } from '../constants';
+import { Controller } from '../controller';
+import { EVENT_TOOLBAR_WEAR_SELECTED } from '../controllerevents';
 
 import toolbarCSS from '../../css/toolbar.css';
 
@@ -42,8 +41,7 @@ export class Toolbar {
 	}
 
 	#initHTML() {
-		this.#htmlElement = createElement('div', {
-			attachShadow: { mode: 'closed' },
+		this.#htmlElement = createShadowRoot('div', {
 			adoptStyle: toolbarCSS,
 			childs: [
 				createElement('div', {

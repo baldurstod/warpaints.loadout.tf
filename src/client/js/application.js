@@ -1,22 +1,19 @@
-import { I18n, createElement, documentStyle, shadowRootStyle } from 'harmony-ui';
 import { themeCSS } from 'harmony-css';
-import { ENABLE_PATREON_BASE, PRODUCTION } from './bundleoptions.js';
-import { Toolbar } from './view/toolbar.js';
-
-
-import htmlCSS from '../css/html.css';
+import { I18n, createElement, createShadowRoot, documentStyle } from 'harmony-ui';
 import applicationCSS from '../css/application.css';
+import htmlCSS from '../css/html.css';
 import mainPanelCSS from '../css/mainpanel.css';
-
 import english from '../json/i18n/english.json';
-import { MainContent } from './view/maincontent.js';
-import { Warpaint } from './model/warpaint.js';
-import { ServerAPI } from './serverapi.js';
+import { PRODUCTION } from './bundleoptions.js';
 import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WARPAINTS, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, STEAM_MARKET_SEARCH_URL, WEAR_LEVELS } from './constants.js';
 import { Controller } from './controller.js';
 import { EVENT_TOOLBAR_WEAR_SELECTED, EVENT_WARPAINT_CLICK } from './controllerevents.js';
 import { GOOGLE_ANALYTICS_ID } from './googleconstants.js';
+import { Warpaint } from './model/warpaint.js';
+import { ServerAPI } from './serverapi.js';
 import { AdPanel } from './view/adpanel.js';
+import { MainContent } from './view/maincontent.js';
+import { Toolbar } from './view/toolbar.js';
 
 documentStyle(htmlCSS);
 documentStyle(themeCSS);
@@ -33,7 +30,7 @@ class Application {
 	#wearFilter;
 
 	constructor() {
-		I18n.setOptions({ translations:[ english ] });
+		I18n.setOptions({ translations: [english] });
 		I18n.start();
 		this.#initListeners();
 		this.#initHTML();
@@ -79,7 +76,7 @@ class Application {
 		// Do stuff
 	}
 
-	#navigateTo(url, replaceSate  = false) {
+	#navigateTo(url, replaceSate = false) {
 		history[replaceSate ? 'replaceState' : 'pushState']({}, undefined, url);
 		this.#startup();
 	}
@@ -186,15 +183,13 @@ class Application {
 	}
 
 	#initHTML() {
-		this.#htmlElement = createElement('div', {
+		this.#htmlElement = createShadowRoot('div', {
 			parent: document.body,
-			attachShadow: { mode: 'closed' },
 			adoptStyle: applicationCSS,
 			childs: [
 				this.#appToolbar.htmlElement,
-				createElement('div', {
+				createShadowRoot('div', {
 					parent: document.body,
-					attachShadow: { mode: 'closed' },
 					adoptStyle: mainPanelCSS,
 					childs: [
 						this.#appContent.htmlElement,

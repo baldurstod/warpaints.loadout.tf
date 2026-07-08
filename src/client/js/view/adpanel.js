@@ -1,4 +1,4 @@
-import { createElement } from 'harmony-ui';
+import { createElement, createShadowRoot } from 'harmony-ui';
 import { setTimeoutPromise } from 'harmony-utils';
 import { ADSBYGOOGLE_INS, ADSBYGOOGLE_SRC } from '../googleconstants.js';
 
@@ -10,13 +10,12 @@ export class AdPanel {
 	#htmlElement;
 
 	#initHTML() {
-		this.#htmlElement = createElement('div', {
-			attachShadow: { mode: 'closed' },
+		this.#htmlElement = createShadowRoot('div', {
 			adoptStyle: adCSS,
 		});
 
 
-		const sc = createElement('script', {src: ADSBYGOOGLE_SRC, async: 1});
+		const sc = createElement('script', { src: ADSBYGOOGLE_SRC, async: 1 });
 		const ad = createElement('div', {
 			parent: document.body,
 			style: 'width:300px; height:auto;position:absolute;top:10rem;right:0;z-index:500;',

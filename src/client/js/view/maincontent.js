@@ -1,8 +1,6 @@
-import { createElement, hide, show } from 'harmony-ui';
-
+import { createElement, createShadowRoot } from 'harmony-ui';
 import mainContentCSS from '../../css/maincontent.css';
 import warpaintsCSS from '../../css/warpaints.css';
-
 export * from './elements/warpaint.js';
 export * from './elements/weapon.js';
 
@@ -26,12 +24,10 @@ export class MainContent {
 	}
 
 	#initHTML() {
-		this.#htmlElement = createElement('div', {
-			attachShadow: { mode: 'closed' },
+		this.#htmlElement = createShadowRoot('div', {
 			adoptStyle: mainContentCSS,
 			childs: [
-				this.#htmlWarpaints = createElement('div', {
-					attachShadow: { mode: 'closed' },
+				this.#htmlWarpaints = createShadowRoot('div', {
 					adoptStyle: warpaintsCSS,
 				}),
 			],
@@ -51,7 +47,9 @@ export class MainContent {
 		for (const warpaint of warpaints) {
 			createElement('loadout-warpaint', {
 				parent: this.#htmlWarpaints,
-				warpaint: warpaint
+				properties: {
+					warpaint: warpaint,
+				}
 			});
 		}
 	}
@@ -60,7 +58,9 @@ export class MainContent {
 		for (const weapon of weapons) {
 			createElement('loadout-weapon', {
 				parent: this.#htmlWarpaints,
-				weapon: weapon
+				properties: {
+					weapon: weapon,
+				}
 			});
 		}
 	}
