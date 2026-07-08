@@ -1,7 +1,7 @@
 import { createElement, createShadowRoot, hide, } from 'harmony-ui';
 import { WEAR_LEVELS } from '../constants';
 import { Controller } from '../controller';
-import { EVENT_TOOLBAR_WEAR_SELECTED } from '../controllerevents';
+import { EVENT_TOOLBAR_GET_PICTURES_CLICK, EVENT_TOOLBAR_WEAR_SELECTED } from '../controllerevents';
 
 import toolbarCSS from '../../css/toolbar.css';
 
@@ -64,6 +64,11 @@ export class Toolbar {
 				createElement('div', {
 					class: 'toolbar-wear',
 					childs: [
+						createElement('button', {
+							class: 'toolbar-get-pictures',
+							i18n: '#get_pictures',
+							$click: () => Controller.dispatchEvent(new CustomEvent(EVENT_TOOLBAR_GET_PICTURES_CLICK)),
+						}),
 						this.#htmlWearSelector = createElement('select', {
 							class: 'toolbar-wear-selector',
 							events: {

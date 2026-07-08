@@ -1,3 +1,4 @@
+import { saveFile } from 'harmony-browser-utils';
 import { themeCSS } from 'harmony-css';
 import { I18n, createElement, createShadowRoot, documentStyle } from 'harmony-ui';
 import applicationCSS from '../css/application.css';
@@ -7,7 +8,7 @@ import english from '../json/i18n/english.json';
 import { PRODUCTION } from './bundleoptions.js';
 import { PAGE_TYPE_UNKNOWN, PAGE_TYPE_WARPAINT, PAGE_TYPE_WARPAINTS, PAGE_TYPE_WEAPON, PAGE_TYPE_WEAPONS, STEAM_MARKET_SEARCH_URL, WEAR_LEVELS } from './constants.js';
 import { Controller } from './controller.js';
-import { EVENT_TOOLBAR_WEAR_SELECTED, EVENT_WARPAINT_CLICK } from './controllerevents.js';
+import { EVENT_TOOLBAR_GET_PICTURES_CLICK, EVENT_TOOLBAR_WEAR_SELECTED, EVENT_WARPAINT_CLICK } from './controllerevents.js';
 import { GOOGLE_ANALYTICS_ID } from './googleconstants.js';
 import { Warpaint } from './model/warpaint.js';
 import { ServerAPI } from './serverapi.js';
@@ -135,6 +136,7 @@ class Application {
 
 	#initListeners() {
 		Controller.addEventListener(EVENT_TOOLBAR_WEAR_SELECTED, event => this.#changeWear(event.detail));
+		Controller.addEventListener(EVENT_TOOLBAR_GET_PICTURES_CLICK, () => this.#getPictures());
 		Controller.addEventListener(EVENT_WARPAINT_CLICK, event => this.#warPaintClick(event.detail));
 	}
 
@@ -144,6 +146,13 @@ class Application {
 		//const pathParams = pathname.substring(1).split('/');
 
 		this.#buildURL(this.#pageType, this.#weaponFilter, this.#wearFilter);
+	}
+
+	async #getPictures() {
+		const response = await ServerAPI.getPictures();
+		if (response) {
+			saveFile(new File([JSON.stringify({ result: response, success: true })], 'warpaint_pictures.json'))
+		}
 	}
 
 	#warPaintClick(warpaint) {

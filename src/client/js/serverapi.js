@@ -41,4 +41,8 @@ export class ServerAPI {
 	static async getWeapons() {
 		return this.#fetchAPI('get-weapons', 1);
 	}
+
+	static async getPictures() {
+		return this.#fetchAPI('get-warpaint-pictures', 1);
+	}
 }
